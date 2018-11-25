@@ -23,13 +23,13 @@
       state: present
       filename: 'kubernetes'
 
-   - name: install kubelet
+   - name: install kubelet=1.7.5-00
      apt:
        name: kubelet
        state: present
        update_cache: true
 
-   - name: install kubeadm
+   - name: install kubeadm=1.7.5-00
      apt:
        name: kubeadm
        state: present
