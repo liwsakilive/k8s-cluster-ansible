@@ -23,16 +23,17 @@
       state: present
       filename: 'kubernetes'
 
-   - name: install kubelet=1.7.5-00
+   - name: install kubelet
      apt:
-       name: kubelet
+       name: kubelet=1.11.3-00
        state: present
        update_cache: true
 
-   - name: install kubeadm=1.7.5-00
+   - name: install kubeadm
      apt:
-       name: kubeadm
+       name: kubeadm=1.11.3-00
        state: present
+       update_cache: true       
 
 - hosts: master
   become: yes

@@ -2,7 +2,7 @@
   become: yes
   tasks:
     - name: initialize the cluster
-      shell: kubeadm init --pod-network-cidr=10.148.0.0/24 --apiserver-cert-extra-sans 139.5.146.130 >> cluster_initialized.txt
+      shell: "kubeadm init --pod-network-cidr=10.148.0.0/24 --apiserver-cert-extra-sans {{ master_public_ip }} --skip-preflight-checks >> cluster_initialized.txt"
       args:
         chdir: $HOME
         creates: cluster_initialized.txt
@@ -22,10 +22,26 @@
         remote_src: yes
         owner: ubuntu
 
-    - name: install Pod network
+    - name: install Pod network hosted-etcd
       become: yes
       become_user: ubuntu
-      shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml >> pod_network_setup.txt
+      shell: kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/etcd.yaml >> pod_network_setup-hosts-etcd.yaml
       args:
         chdir: $HOME
-        creates: pod_network_setup.txt
+        creates: pod_network_setup-hosts-etcd.txt
+
+    - name: install Pod network rbac-kdd
+      become: yes
+      become_user: ubuntu
+      shell: kubectl apply -f https://docs.projectcalico.org/v3.1/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml >> pod_network_setup-rbac-rdd.txt
+      args:
+        chdir: $HOME
+        creates: pod_network_setup-rac-rdd.txt
+
+    - name: install Pod network calico 
+      become: yes
+      become_user: ubuntu
+      shell: kubectl apply -f https://docs.projectcalico.org/v3.1/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml  >> pod_network_setup-calico.txt
+      args:
+        chdir: $HOME
+        creates: pod_network_setup-calico.txt
