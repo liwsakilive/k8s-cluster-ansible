@@ -22,23 +22,30 @@
       repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
       state: present
       filename: 'kubernetes'
+      
+   - name: install kubernetes-cni
+     apt:
+       name: kubernetes-cni=0.6.0-00
+       state: present
+       update_cache: true
 
    - name: install kubelet
      apt:
-       name: kubelet=1.11.3-00
+       name: kubelet=1.13.4-00 
        state: present
        update_cache: true
 
    - name: install kubeadm
      apt:
-       name: kubeadm=1.11.3-00
+       name: kubeadm=1.13.4-00 
        state: present
-       update_cache: true       
+       update_cache: true   
 
 - hosts: master
   become: yes
   tasks:
-   - name: install kubectl
-     apt:
-       name: kubectl
-       state: present
+  - name: install kubectl
+    apt:
+      name: kubectl=1.13.4-00
+      state: present
+      force: yes

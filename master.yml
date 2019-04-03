@@ -2,7 +2,7 @@
   become: yes
   tasks:
     - name: initialize the cluster
-      shell: "kubeadm init --pod-network-cidr=10.148.0.0/24 --apiserver-cert-extra-sans {{ master_public_ip }} --skip-preflight-checks >> cluster_initialized.txt"
+      shell: "kubeadm init --pod-network-cidr=10.148.0.0/24 --apiserver-cert-extra-sans {{ master_public_ip }} --ignore-preflight-errors=All >> cluster_initialized.txt"
       args:
         chdir: $HOME
         creates: cluster_initialized.txt
